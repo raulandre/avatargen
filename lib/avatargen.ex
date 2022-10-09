@@ -10,16 +10,22 @@ defmodule Avatargen do
   end
 
   @doc """
-  Returns the first three elements of a given Avatargen.Image hex as a list
+  Returns a new Avatargen.Image containing the RGB values
 
   ## Examples:
     iex> image = Avatargen.hash("avatargen")
     iex> Avatargen.get_colors(image)
-    [222, 51, 125]
+    %Avatargen.Image{
+      hex: [222, 51, 125, 87, 30, 108, 250, 77, 85, 28, 162, 229, 155, 62, 226, 227],
+      rgb: {222, 51, 125}
+    }
   """
   def get_colors(image) do
     [r, g, b | _] = image.hex
-    [r, g, b]
+
+    %Avatargen.Image{
+      image | rgb: {r, g, b}
+    }
   end
 
   @doc """

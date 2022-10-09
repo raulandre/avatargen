@@ -1,3 +1,3 @@
 defmodule Avatargen.Image do
-  defstruct hex: nil
+  defstruct hex: nil, rgb: nil
 end
