@@ -20,9 +20,7 @@ defmodule Avatargen do
       rgb: {222, 51, 125}
     }
   """
-  def get_colors(image) do
-    [r, g, b | _] = image.hex
-
+  def get_colors(%Avatargen.Image{ hex: [r, g, b | _] } = image) do
     %Avatargen.Image{
       image | rgb: {r, g, b}
     }
