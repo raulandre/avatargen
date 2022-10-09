@@ -8,12 +8,28 @@ defmodule Avatargen do
     |> hash
     |> get_colors
     |> gen_grid
+    |> filter_odd_squares
+  end
+
+  def filter_odd_squares(%Avatargen.Image{ grid: grid } = image) do
+    grid = Enum.filter(grid, fn({idx, _}) -> rem(idx, 2) == 0 end)
+
+    %Avatargen.Image{
+      image | grid: grid
+    }
   end
 
   def gen_grid(%Avatargen.Image{ hex: hex } = image) do
-    hex
-    |> Enum.chunk(3)
-    |> Enum.map(&mirror_row/1)
+    grid =
+      hex
+      |> Enum.chunk(3)
+      |> Enum.map(&mirror_row/1)
+      |> List.flatten
+      |> Enum.with_index
+
+    %Avatargen.Image{
+      image | grid: grid
+    }
   end
 
   def mirror_row(row) do
