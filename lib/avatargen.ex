@@ -9,10 +9,39 @@ defmodule Avatargen do
     |> get_colors
     |> gen_grid
     |> filter_odd_squares
+    |> gen_pixel_map
+    |> draw
+    |> save(seed)
+  end
+
+  def save(image, seed) do
+    File.write("#{seed}.png", image)
+  end
+
+  def gen_pixel_map(%Avatargen.Image { grid: grid } = image) do
+    map =
+      grid
+      |> Enum.map(fn({_, idx}) -> {
+        { rem(idx, 5) * 50, div(idx, 5) * 50 } , { rem(idx, 5) * 50 + 50, div(idx, 5) * 50 + 50}
+      } end)
+
+    %Avatargen.Image{
+      image | pixel_map: map
+    }
+  end
+
+  def draw(%Avatargen.Image{ rgb: rgb, pixel_map: pixel_map }) do
+    image = :egd.create(250, 250)
+    fill = :egd.color(rgb)
+
+    pixel_map
+    |> Enum.each(fn({top_left, bottom_right}) -> :egd.filledRectangle(image, top_left, bottom_right, fill) end)
+
+    :egd.render(image)
   end
 
   def filter_odd_squares(%Avatargen.Image{ grid: grid } = image) do
-    grid = Enum.filter(grid, fn({idx, _}) -> rem(idx, 2) == 0 end)
+    grid = Enum.filter(grid, fn({code, _}) -> rem(code, 2) == 0 end)
 
     %Avatargen.Image{
       image | grid: grid
