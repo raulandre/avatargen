@@ -1,6 +1,5 @@
 # Avatargen
-
-**TODO: Add description**
+  Elixir project to generate symmetrical random avatars.
 
 ## Installation
 

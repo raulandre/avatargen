@@ -3,16 +3,16 @@ defmodule Avatargen do
   Documentation for `Avatargen`.
   """
 
+  def main(seed) do
+    seed
+    |> hash
+  end
+
   @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> Avatargen.hello()
-      :world
-
+  Generates a md5 hash from a given seed and returns it as a binary list
   """
-  def hello do
-    :world
+  def hash(seed) do
+    :crypto.hash(:md5, seed)
+    |> :binary.bin_to_list
   end
 end
